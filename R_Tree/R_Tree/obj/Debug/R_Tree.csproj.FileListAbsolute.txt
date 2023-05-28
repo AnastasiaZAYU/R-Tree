@@ -1,0 +1,7 @@
+D:\Proga\R_Tree\R_Tree\bin\Debug\R_Tree.exe.config
+D:\Proga\R_Tree\R_Tree\bin\Debug\R_Tree.exe
+D:\Proga\R_Tree\R_Tree\bin\Debug\R_Tree.pdb
+D:\Proga\R_Tree\R_Tree\obj\Debug\R_Tree.csprojAssemblyReference.cache
+D:\Proga\R_Tree\R_Tree\obj\Debug\R_Tree.csproj.CoreCompileInputs.cache
+D:\Proga\R_Tree\R_Tree\obj\Debug\R_Tree.exe
+D:\Proga\R_Tree\R_Tree\obj\Debug\R_Tree.pdb
