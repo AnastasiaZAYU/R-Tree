@@ -8,31 +8,12 @@ namespace R_Tree
 {
     class Database
     {
-        List<string> name;
-        List<RTree> address;
+        private readonly Dictionary<string, RTree> _trees = new Dictionary<string, RTree>(StringComparer.OrdinalIgnoreCase);
 
-        public Database()
-        {
-            name = new List<string>();
-            address = new List<RTree>();
-        }
+        public void Add(string name, RTree tree) => _trees[name] = tree;
 
-        public void Add(string str, RTree link)
-        {
-            name.Add(str);
-            address.Add(link);
-        }
+        public bool Exists(string name) => _trees.ContainsKey(name);
 
-        public int Contains(string str)
-        {
-            if (name.Contains(str)) return 1;
-            return 0;
-        }
-
-        public RTree Link(string str)
-        {
-            int index = name.IndexOf(str);
-            return address[index];
-        }
+        public RTree Get(string name) => _trees.TryGetValue(name, out var tree) ? tree : null;
     }
 }

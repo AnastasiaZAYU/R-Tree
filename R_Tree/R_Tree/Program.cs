@@ -63,6 +63,16 @@ namespace R_Tree
             switch (command)
             {
                 case "create":
+                    if (parts.Length < 2)
+                        throw new Exception("Usage: create <tree_name>;");
+                    string treeName = parts[1];
+                    if (db.Exists(treeName))
+                    {
+                        Console.WriteLine($"Tree '{treeName}' already exists.");
+                        return;
+                    }
+                    db.Add(treeName, new RTree());
+                    Console.WriteLine($"Tree '{treeName}' created.");
                     break;
 
                 case "insert":
