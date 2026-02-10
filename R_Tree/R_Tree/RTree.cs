@@ -47,5 +47,45 @@ namespace R_Tree
             }
             node.UpdateMBR();
         }
+
+        public void PrintTree()
+        {
+            if (_root == null)
+            {
+                Console.WriteLine("Tree is empty.");
+                return;
+            }
+            PrintRecursive(_root, "", true);
+        }
+
+        private void PrintRecursive(Node node, string indent, bool isLast)
+        {
+            if (node == null) 
+                return;
+
+            Console.Write(indent);
+            Console.Write(isLast ? "└─ " : "├── ");
+
+            if (node.IsLeaf)
+            {
+                Console.WriteLine($"Point: {node.DataPoint}");
+            }
+            else
+            {
+                Console.WriteLine($"MBR: [{node.MBR.XMin}, {node.MBR.YMin}] - [{node.MBR.XMax}, {node.MBR.YMax}]");
+
+                string childIndent = indent + (isLast ? "    " : "│   ");
+
+                if (node.Left != null && node.Right != null)
+                {
+                    PrintRecursive(node.Left, childIndent, false);
+                    PrintRecursive(node.Right, childIndent, true);
+                }
+                else if (node.Left != null)
+                {
+                    PrintRecursive(node.Left, childIndent, true);
+                }
+            }
+        }
     }
 }

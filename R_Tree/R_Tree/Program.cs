@@ -89,7 +89,14 @@ namespace R_Tree
                     Console.WriteLine($"Inserted point ({x}, {y}) into tree '{treeName}'.");
                     break;
 
-                case "print_tree":
+                case "print":
+                    if (parts.Length < 2)
+                        throw new Exception("Usage: print <tree_name>;");
+                    treeName = parts[1];
+                    var treeToPrint = db.Get(treeName);
+                    if (treeToPrint == null)
+                        throw new Exception($"Tree '{treeName}' not found.");
+                    treeToPrint.PrintTree();
                     break;
 
                 case "exit":
