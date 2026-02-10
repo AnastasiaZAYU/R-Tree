@@ -76,6 +76,17 @@ namespace R_Tree
                     break;
 
                 case "insert":
+                    if (parts.Length < 4)
+                        throw new Exception("Usage: insert <tree_name> (x, y);");
+                    treeName = parts[1];
+                    var treeToInsert = db.Get(treeName);
+                    if (treeToInsert == null)
+                        throw new Exception($"Tree '{treeName}' not found.");
+
+                    int x = int.Parse(parts[2]);
+                    int y = int.Parse(parts[3]);
+                    treeToInsert.Insert(x, y);
+                    Console.WriteLine($"Inserted point ({x}, {y}) into tree '{treeName}'.");
                     break;
 
                 case "print_tree":
@@ -91,7 +102,7 @@ namespace R_Tree
                     break;
 
                 default:
-                    throw new Exception("Unknown command. Available commands: create, insert, search, print_tree, contains, exit.");
+                    throw new Exception("Unknown command. Available commands: create, insert, exit.");
             }
         }
     }
