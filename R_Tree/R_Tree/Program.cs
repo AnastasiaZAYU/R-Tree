@@ -12,7 +12,17 @@ namespace R_Tree
         static void Main(string[] args)
         {
             var db = new Database();
-            Console.WriteLine("R-Tree Database CLI. Type 'exit' to quit. Use ';' at the end of each command.");
+            Console.WriteLine("========================= R-Tree Spatial Database CLI =========================");
+            Console.WriteLine("Available commands:");
+            Console.WriteLine("  create <tree_name>;                      - Create a new tree");
+            Console.WriteLine("  insert <tree_name> (x, y);               - Insert a point");
+            Console.WriteLine("  contains <tree_name> (x, y);             - Check if point exists");
+            Console.WriteLine("  search <tree_name> (x1, y1) (x2, y2);    - Find points in area");
+            Console.WriteLine("  nearest <tree_name> (x, y);              - Find the closest point");
+            Console.WriteLine("  print <tree_name>;                       - Visualize the tree structure");
+            Console.WriteLine("  exit;                                    - Exit the program");
+            Console.WriteLine("--------------------------------------------------");
+            Console.WriteLine("Tip: Use ';' at the end of each command. Coordinates can be (x, y) or just x y.");
 
             while (true)
             {
@@ -132,7 +142,7 @@ namespace R_Tree
                     }
                     else
                     {
-                        Console.WriteLine($"Found {results.Count} points:");
+                        Console.WriteLine($"Found {results.Count} point(s):");
                         foreach (var point in results)
                         {
                             Console.WriteLine($"{point}");
@@ -140,8 +150,29 @@ namespace R_Tree
                     }
                     break;
 
+                case "nearest":
+                    if (parts.Length < 4)
+                        throw new Exception("Usage: nearest <tree_name> (x, y);");
+                    treeName = parts[1];
+                    var treeToNN = db.Get(treeName);
+                    if (treeToNN == null)
+                        throw new Exception($"Tree '{treeName}' not found.");
+
+                    x = int.Parse(parts[2]);
+                    y = int.Parse(parts[3]);
+                    var nearest = treeToNN.SearchNearest(x, y);
+                    if (nearest == null)
+                    {
+                        Console.WriteLine("Tree is empty.");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Nearest point to ({x}, {y}) is {nearest}.");
+                    }
+                    break;
+
                 default:
-                    throw new Exception("Unknown command. Available commands: create, insert, contains, print, exit.");
+                    throw new Exception("Unknown command. Available commands: create, insert, contains, search, nearest, print, exit.");
             }
         }
     }

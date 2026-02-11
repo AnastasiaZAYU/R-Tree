@@ -52,5 +52,12 @@ namespace R_Tree
                 this.YMax < other.YMin ||
                 this.YMin > other.YMax);
         }
+
+        public long MinDistanceSquared(int x, int y)
+        {
+            long dx = Math.Max(0, Math.Max(XMin - x, x - XMax));
+            long dy = Math.Max(0, Math.Max(YMin - y, y - YMax));
+            return dx * dx + dy * dy;
+        }
     }
 }

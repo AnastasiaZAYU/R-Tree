@@ -95,6 +95,51 @@ namespace R_Tree
             }
         }
 
+        public Point? SearchNearest(int x, int y)
+        {
+            if (_root == null)
+                return null;
+            Point? bestPoint = null;
+            long minDistanceSq = long.MaxValue;
+            SearchNearestRecursive(_root, x, y, ref bestPoint, ref minDistanceSq);
+            return bestPoint;
+        }
+
+        private void SearchNearestRecursive(Node node, int x, int y, ref Point? bestPoint, ref long minDistanceSq)
+        {
+            if (node == null)
+                return;
+
+            if (node.IsLeaf)
+            {
+                long distSq = node.DataPoint.DistanceSquared(x, y);
+                if (distSq < minDistanceSq)
+                {
+                    minDistanceSq = distSq;
+                    bestPoint = node.DataPoint;
+                }
+                return;
+            }
+
+            long disLeft = node.Left.MBR.MinDistanceSquared(x, y);
+            long disRight = node.Right.MBR.MinDistanceSquared(x, y);
+
+            if (disLeft < disRight)
+            {
+                if (disLeft < minDistanceSq)
+                    SearchNearestRecursive(node.Left, x, y, ref bestPoint, ref minDistanceSq);
+                if (disRight < minDistanceSq)
+                    SearchNearestRecursive(node.Right, x, y, ref bestPoint, ref minDistanceSq);
+            }
+            else
+            {
+                if (disRight < minDistanceSq)
+                    SearchNearestRecursive(node.Right, x, y, ref bestPoint, ref minDistanceSq);
+                if (disLeft < minDistanceSq)
+                    SearchNearestRecursive(node.Left, x, y, ref bestPoint, ref minDistanceSq);
+            }
+        }
+
         public void PrintTree()
         {
             if (_root == null)
