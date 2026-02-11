@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace R_Tree
 {
+    // This implementation is a binary R-tree.
+    // It uses MBR for spatial search, but limits the number of children per node to 2
+    // to simplify the logic without the need for complex balancing (Split).
     public class RTree
     {
         private Node _root;
