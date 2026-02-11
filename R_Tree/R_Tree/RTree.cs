@@ -10,6 +10,26 @@ namespace R_Tree
     {
         private Node _root;
 
+        public bool Contains(int x, int y)
+        {
+            return ContainsRecursive(_root, x, y);
+        }
+
+        private bool ContainsRecursive(Node node, int x, int y)
+        {
+            if (node == null) 
+                return false;
+
+            if (!node.MBR.Contains(x, y))
+                return false;
+
+            if (node.IsLeaf)
+            {
+                return node.DataPoint.X == x && node.DataPoint.Y == y;
+            }
+            return ContainsRecursive(node.Left, x, y) || ContainsRecursive(node.Right, x, y);
+        }
+
         public void Insert(int x, int y)
         {
             if (_root == null)
@@ -18,6 +38,8 @@ namespace R_Tree
             }
             else
             {
+                if (Contains(x, y))
+                    throw new Exception($"Point ({x}, {y}) already exists in the tree.");
                 InsertRecursive(_root, x, y);
             }
         }

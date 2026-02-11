@@ -96,20 +96,28 @@ namespace R_Tree
                     var treeToPrint = db.Get(treeName);
                     if (treeToPrint == null)
                         throw new Exception($"Tree '{treeName}' not found.");
+
                     treeToPrint.PrintTree();
                     break;
 
-                case "exit":
-                    break;
-
                 case "contains":
+                    if (parts.Length < 4)
+                        throw new Exception("Usage: contains <tree_name> (x, y);");
+                    treeName = parts[1];
+                    var treeToCheck = db.Get(treeName);
+                    if (treeToCheck == null)
+                        throw new Exception($"Tree '{treeName}' not found.");
+                    
+                    x = int.Parse(parts[2]);
+                    y = int.Parse(parts[3]);
+                    Console.WriteLine(treeToCheck.Contains(x, y) ? "Yes" : "No");
                     break;
 
                 case "search":
                     break;
 
                 default:
-                    throw new Exception("Unknown command. Available commands: create, insert, exit.");
+                    throw new Exception("Unknown command. Available commands: create, insert, contains, print, exit.");
             }
         }
     }
