@@ -44,5 +44,13 @@ namespace R_Tree
             YMin = Math.Min(YMin, y);
             YMax = Math.Max(YMax, y);
         }
+
+        public bool Intersects(Rectangle other)
+        {
+            return !(this.XMax < other.XMin || 
+                this.XMin > other.XMax || 
+                this.YMax < other.YMin ||
+                this.YMin > other.YMax);
+        }
     }
 }

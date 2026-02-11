@@ -70,6 +70,31 @@ namespace R_Tree
             node.UpdateMBR();
         }
 
+        public List<Point> SearchInArea(int xMin, int yMin, int xMax, int yMax)
+        {
+            var results = new List<Point>();
+            var searchArea = new Rectangle(x1: xMin, y1: yMin, x2: xMax, y2: yMax);
+            SearchInAreaRecursive(_root, searchArea, results);
+            return results;
+        }
+
+        private void SearchInAreaRecursive(Node node, Rectangle area, List<Point> results)
+        {
+            if (node == null || !node.MBR.Intersects(area))
+                return;
+
+            if (node.IsLeaf)
+            {
+                if (area.Contains(node.DataPoint.X, node.DataPoint.Y))
+                    results.Add(node.DataPoint);
+            }
+            else
+            {
+                SearchInAreaRecursive(node.Left, area, results);
+                SearchInAreaRecursive(node.Right, area, results);
+            }
+        }
+
         public void PrintTree()
         {
             if (_root == null)

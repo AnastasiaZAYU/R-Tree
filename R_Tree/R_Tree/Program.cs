@@ -114,6 +114,30 @@ namespace R_Tree
                     break;
 
                 case "search":
+                    if (parts.Length < 6)
+                        throw new Exception("Usage: search <tree_name> (xMin, yMin) (xMax, yMax);");
+                    treeName = parts[1];
+                    var treeToSearch = db.Get(treeName);
+                    if (treeToSearch == null)
+                        throw new Exception($"Tree '{treeName}' not found.");
+
+                    int xMin = int.Parse(parts[2]);
+                    int yMin = int.Parse(parts[3]);
+                    int xMax = int.Parse(parts[4]);
+                    int yMax = int.Parse(parts[5]);
+                    var results = treeToSearch.SearchInArea(xMin, yMin, xMax, yMax);
+                    if (results.Count == 0)
+                    {
+                        Console.WriteLine("No points found in the specified area.");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Found {results.Count} points:");
+                        foreach (var point in results)
+                        {
+                            Console.WriteLine($"{point}");
+                        }
+                    }
                     break;
 
                 default:
